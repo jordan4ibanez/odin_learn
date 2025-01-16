@@ -3,6 +3,7 @@ package main
 import "core:fmt"
 import "utility"
 import rl "vendor:raylib"
+import stb "vendor:stb/image"
 
 
 main :: proc() {
@@ -13,8 +14,6 @@ main :: proc() {
 
 	rl.InitWindow(800, 800, "hi")
 	defer rl.CloseWindow()
-
-	
 
 
 }
