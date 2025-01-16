@@ -1,2 +1,2 @@
 default:
-	@odin run .
+	@odin run source/
