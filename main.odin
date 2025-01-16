@@ -3,5 +3,7 @@ package main
 import "core:fmt"
 
 main :: proc() {
-	fmt.println("hi" + "tets")
+	blah: int = 3
+
+	fmt.println(blah, "and hi")
 }
