@@ -14,6 +14,8 @@ main :: proc() {
 
 	iAmAConstant :: "hi"
 
+	defer fmt.println("bye")
+
 	fmt.println(blah, "and hi", iAmAConstant)
 
 	for i := 0; i < 10; i += 1 {
