@@ -1,6 +1,7 @@
 package main
 
 import "core:fmt"
+import "core:math/rand"
 
 @(private)
 x :: "hi"
@@ -51,7 +52,37 @@ main :: proc() {
 
 	fmt.println()
 
+	for &i in boof {
+		i *= 2
+	}
 
+	boof2 := []f32{2, 2, 2, 2, 2, 2, 2}
+
+	fmt.println(boof)
+
+	for i in 0 ..< len(boof2) {
+		boof[i] /= boof2[i]
+	}
+
+	fmt.println(boof)
+
+	#reverse for i in boof {
+		fmt.println(i)
+	}
+
+
+	if (boof[2] >= 20) {
+		fmt.println("yep that's greater")
+	}
+
+	randy := rand.float32()
+
+	fmt.println(randy)
+	if (randy > 0.5) {
+		fmt.println("true!")
+	} else {
+		fmt.println("false!")
+	}
 
 
 }
