@@ -2,6 +2,7 @@ package main
 
 import "core:fmt"
 import "core:math/rand"
+import "core:mem"
 import "core:strings"
 
 @(private)
@@ -34,6 +35,30 @@ recurse :: proc(index: ^i32) -> i32 {
 }
 
 main :: proc() {
+
+
+	fmt.println("debuggy")
+
+	track: mem.Tracking_Allocator
+	mem.tracking_allocator_init(&track, context.allocator)
+	context.allocator = mem.tracking_allocator(&track)
+
+	defer {
+		if len(track.allocation_map) > 0 {
+			fmt.eprintf("=== %v allocations not freed: ===\n", len(track.allocation_map))
+			for _, entry in track.allocation_map {
+				fmt.eprintf("- %v bytes @ %v\n", entry.size, entry.location)
+			}
+		}
+		if len(track.bad_free_array) > 0 {
+			fmt.eprintf("=== %v incorrect frees: ===\n", len(track.bad_free_array))
+			for entry in track.bad_free_array {
+				fmt.eprintf("- %p @ %v\n", entry.memory, entry.location)
+			}
+		}
+		mem.tracking_allocator_destroy(&track)
+	}
+
 
 	asdf := 1
 
@@ -138,7 +163,26 @@ main :: proc() {
 	named_arg()
 
 	fmt.println(add(1, 1))
-	fmt.println(add("hi", " there"))
+	boofer := add("hi", " there")
+
+	delete(boofer)
+
+
+	cool := proc(input: ^int) {
+		input^ += 1
+	}
+
+	cool(&asf)
+
+	fmt.println(asf)
+
+	another_cool := proc(boof: proc()) {
+		boof()
+	}
+
+	another_cool(proc() {
+		fmt.println("WAT")
+	})
 
 }
 
