@@ -10,6 +10,24 @@ blah :: proc() {
 	fmt.println("blah!")
 }
 
+
+@(private)
+/*
+Count from 1 to 10.
+*/
+recurse :: proc(index: ^i32) -> i32 {
+
+	index^ += 1
+
+	fmt.println("in recursive", index^)
+
+	if index^ >= 10 {
+		return index^
+	}
+
+	return recurse(index)
+}
+
 main :: proc() {
 
 	iAmAConstant :: "hi"
@@ -85,6 +103,21 @@ main :: proc() {
 	} else {
 		fmt.println("false!")
 	}
+
+	{
+		defer fmt.println("scope end")
+	}
+
+
+	#partial switch arch := ODIN_ARCH; arch {
+	case .i386:
+		fmt.println("old")
+	case .amd64:
+		fmt.println("new")
+	}
+
+	o: i32 = 0
+	fmt.println("did we reach 10?", recurse(&o))
 
 
 }
