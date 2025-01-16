@@ -5,7 +5,9 @@ import "utility/heap_tracker"
 
 
 main :: proc() {
-	heap_tracker.initialize()
-	defer heap_tracker.terminate()
+	context.allocator = heap_tracker.initialize(context)
+	defer heap_tracker.terminate(context.allocator)
+
+	blah := new(int)
 
 }

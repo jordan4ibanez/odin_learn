@@ -1,24 +1,27 @@
 package heap_tracker
 
+import "base:runtime"
 import "core:fmt"
 import "core:mem"
 
-@(private)
-track: mem.Tracking_Allocator
 
 /*
 Initializes the tracing allocator.
 */
-initialize :: proc() {
-	mem.tracking_allocator_init(&track, context.allocator)
-	context.allocator = mem.tracking_allocator(&track)
+initialize :: proc(con: runtime.Context) -> mem.Allocator {
+	track := new(mem.Tracking_Allocator)
+	mem.tracking_allocator_init(track, con.allocator)
+	return mem.tracking_allocator(track)
 }
 
 /*
 Terminates the tracing allocator.
 Then tells me where I done goofed.
 */
-terminate :: proc() {
+terminate :: proc(allo: mem.Allocator) {
+
+	track := cast(^mem.Tracking_Allocator)allo.data
+
 	if len(track.allocation_map) > 0 {
 		fmt.eprintf("=== %v allocations not freed: ===\n", len(track.allocation_map))
 		for _, entry in track.allocation_map {
@@ -31,5 +34,5 @@ terminate :: proc() {
 			fmt.eprintf("- %p @ %v\n", entry.memory, entry.location)
 		}
 	}
-	mem.tracking_allocator_destroy(&track)
+	mem.tracking_allocator_destroy(track)
 }
