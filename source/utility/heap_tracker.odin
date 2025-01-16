@@ -1,4 +1,4 @@
-package heap_tracker
+package utility
 
 import "base:runtime"
 import "core:fmt"
@@ -8,7 +8,7 @@ import "core:mem"
 /*
 Initializes the tracing allocator.
 */
-initialize :: proc(con: runtime.Context) -> mem.Allocator {
+initialize_heap_tracker :: proc(con: runtime.Context) -> mem.Allocator {
 	track := new(mem.Tracking_Allocator)
 	mem.tracking_allocator_init(track, con.allocator)
 	return mem.tracking_allocator(track)
@@ -18,7 +18,7 @@ initialize :: proc(con: runtime.Context) -> mem.Allocator {
 Terminates the tracing allocator.
 Then tells me where I done goofed.
 */
-terminate :: proc(allo: mem.Allocator) {
+terminate_heap_tracker :: proc(allo: mem.Allocator) {
 
 	track := cast(^mem.Tracking_Allocator)allo.data
 

@@ -1,13 +1,20 @@
 package main
 
 import "core:fmt"
-import "utility/heap_tracker"
+import "utility"
+import rl "vendor:raylib"
 
 
 main :: proc() {
-	context.allocator = heap_tracker.initialize(context)
-	defer heap_tracker.terminate(context.allocator)
+	context.allocator = utility.initialize_heap_tracker(context)
+	defer utility.terminate_heap_tracker(context.allocator)
 
-	blah := new(int)
+	rl.SetTraceLogLevel(rl.TraceLogLevel.ERROR)
+
+	rl.InitWindow(800, 800, "hi")
+	defer rl.CloseWindow()
+
+	
+
 
 }
