@@ -2,12 +2,17 @@ package main
 
 import "core:fmt"
 import "core:math/rand"
+import "core:strings"
 
 @(private)
-x :: "hi"
+X :: "hi"
 
 blah :: proc() {
 	fmt.println("blah!")
+}
+
+lots_o_vars :: proc(x, y, z: i32) {
+	fmt.println(x, y, z)
 }
 
 
@@ -30,11 +35,13 @@ recurse :: proc(index: ^i32) -> i32 {
 
 main :: proc() {
 
-	iAmAConstant :: "hi"
+	asdf := 1
+
+	I_AM_A_CONSTANT :: "hi"
 
 	defer fmt.println("bye")
 
-	fmt.println(blah, "and hi", iAmAConstant)
+	fmt.println(blah, "and hi", I_AM_A_CONSTANT)
 
 	for i := 0; i < 10; i += 1 {
 		fmt.println(i)
@@ -47,11 +54,11 @@ main :: proc() {
 	}
 
 
-	for char in iAmAConstant {
+	for char in I_AM_A_CONSTANT {
 		fmt.println(char)
 	}
 
-	fmt.println(iAmAConstant[0:1])
+	fmt.println(I_AM_A_CONSTANT[0:1])
 
 	y := 10
 
@@ -119,5 +126,40 @@ main :: proc() {
 	o: i32 = 0
 	fmt.println("did we reach 10?", recurse(&o))
 
+	lots_o_vars(1, 2, 3)
 
+	asf := 0
+	fmt.println(testing(asf))
+
+	fmt.println(fmt.printfln("hi", "hi"))
+
+	named_arg(input = "hi")
+
+	named_arg()
+
+	fmt.println(add(1, 1))
+	fmt.println(add("hi", " there"))
+
+}
+
+testing :: proc(input: int) -> (output: int) {
+	output = input + 1
+	return
+}
+
+named_arg :: proc(input: string = "nothing here") {
+	fmt.println("this is a named string:", input)
+}
+
+add_int :: proc(x, y: int) -> int {
+	return x + y
+}
+
+add_str :: proc(x, y: string) -> string {
+	return strings.concatenate({x, y})
+}
+
+add :: proc {
+	add_int,
+	add_str,
 }
